@@ -24,7 +24,7 @@ public class ClockComponent
     
     public drawClockHands(Graphics2D g2){
       
-    
+        //this is the method for animating the clock hands
     
     
     } 
