@@ -1,0 +1,10 @@
+#BlueJ class context
+comment0.params=
+comment0.target=ClockComponent()
+comment1.params=g
+comment1.target=void\ paintComponent(java.awt.Graphics)
+comment2.params=g3
+comment2.target=void\ drawClockFace(java.awt.Graphics2D)
+comment3.params=g2
+comment3.target=void\ drawClockHands(java.awt.Graphics2D)
+numComments=4
