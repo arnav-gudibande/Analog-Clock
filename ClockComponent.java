@@ -37,6 +37,11 @@ public class ClockComponent extends JComponent
             double y1 = -r1*Math.sin(thetaRadians);
             double x2 = r2*Math.cos(thetaRadians);
             double y2 = -r2*Math.sin(thetaRadians);
+            if(theta%5==0){
+                g2.setStroke(new BasicStroke(2));
+                Line2D.Double tick = new Line2D.Double(x1,y1,x2,y2);
+                g2.draw(tick);
+            }
             if(theta%90==0 || theta==0) {
                 g2.setStroke(new BasicStroke(2));
                 switch(count){
