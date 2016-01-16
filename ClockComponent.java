@@ -22,57 +22,57 @@ public class ClockComponent extends JComponent
     }
 
     public static void drawClockFace(Graphics2D g2){
-        Ellipse2D.Double border = new Ellipse2D.Double(-DIAMETER/2,-DIAMETER/2,DIAMETER,DIAMETER);
-        g2.setStroke(new BasicStroke(3));
-        g2.draw(border);  
+        Ellipse2D.Double border = new Ellipse2D.Double(-DIAMETER/2,-DIAMETER/2,DIAMETER,DIAMETER);//draws the border of the clock, the center is the diameter/2 and its size is the diameter
+        g2.setStroke(new BasicStroke(3));//emboldens the line
+        g2.draw(border);//draws the circle on the Graphics2D object 
 
-        double r1 = DIAMETER * 0.4;
-        double r2 = DIAMETER * 0.45;
-        int count=0;
-        String hour = "";
+        double r1 = DIAMETER * 0.4;//sets r1 to 2/5 of the diameter
+        double r2 = DIAMETER * 0.45;//sets r2 to 0.45 of the diameter
+        int count=0;//count is 0
+        String hour = "";//hour is initialized
 
-        for(int theta = 0; theta < 360; theta=theta+6) {
-            double thetaRadians = Math.toRadians(theta);
-            double x1 = r1*Math.cos(thetaRadians);
-            double y1 = -r1*Math.sin(thetaRadians);
-            double x2 = r2*Math.cos(thetaRadians);
-            double y2 = -r2*Math.sin(thetaRadians);
-            if(theta%5==0){
-                g2.setStroke(new BasicStroke(2));
-                Line2D.Double tick = new Line2D.Double(x1,y1,x2,y2);
+        for(int theta = 0; theta < 360; theta=theta+6) {//for loop to go around the circle starting at 0 degrees and ending at 360 degrees, every 6 degrees
+            double thetaRadians = Math.toRadians(theta);//converts the degrees to radians
+            double x1 = r1*Math.cos(thetaRadians);//calculates the x1 point, by multiplying r1 by the cosine of theta
+            double y1 = -r1*Math.sin(thetaRadians);//calculates the y1 point, by multiplying r1 by the sin of theta
+            double x2 = r2*Math.cos(thetaRadians);//calculates the x2 point, by multiplying r2 by the cosine of theta
+            double y2 = -r2*Math.sin(thetaRadians);//calculates the y2 point, by multiplying r2 by the sin of theta
+            if(theta%5==0){//if the theta is a multiple of five, then the tick represents one of the hours
+                g2.setStroke(new BasicStroke(2));//if its an hour, then we embolden that specific tick
+                Line2D.Double tick = new Line2D.Double(x1,y1,x2,y2);//draws the tick
                 g2.draw(tick);
             }
-            if(theta%90==0 || theta==0) {
-                g2.setStroke(new BasicStroke(2));
-                switch(count){
+            if(theta%90==0 || theta==0) {//if it is either 12,3,6 or 9, then embolden it and place a number by that tick
+                g2.setStroke(new BasicStroke(2));//bold it 
+                switch(count){//switch statement for the count
                     case 0: 
-                        hour="3";
+                        hour="3";//set the hour to 3
                         break;
                     case 1: 
-                        hour="12";
+                        hour="12";//set it to 12
                         break;
                     case 2: 
-                        hour="9";
+                        hour="9";//set it to 9
                         break;
                     case 3: 
-                        hour="6";
+                        hour="6";//set it to 6
                         break;
                 }
-                if(hour.equals("12")) g2.drawString(hour,(int) Math.round(x2-6.7),(int) Math.round(y2+30));
-                if(hour.equals("3")) g2.drawString(hour,(int) Math.round(x2-30),(int) Math.round(y2+5));
-                if(hour.equals("6")) g2.drawString(hour,(int) Math.round(x2-3),(int) Math.round(y2-24));
-                if(hour.equals("9")){ 
+                if(hour.equals("12")) g2.drawString(hour,(int) Math.round(x2-6.7),(int) Math.round(y2+30));//if its 12, then position the 12 below the tick
+                if(hour.equals("3")) g2.drawString(hour,(int) Math.round(x2-30),(int) Math.round(y2+5));//if its 3, then position the 3 to the left of the tick
+                if(hour.equals("6")) g2.drawString(hour,(int) Math.round(x2-3),(int) Math.round(y2-24));//if its 6, position the 6 above the tick
+                if(hour.equals("9")){ //if its 9, position the 9 to the right of the tick
                     g2.drawString(hour,(int) Math.round(x2+25),(int) Math.round(y2+5));
-                    String day = String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
-                    g2.setColor(Color.ORANGE);
-                    g2.drawString(day, (int) Math.round(x2+65), (int) Math.round(y2+5));
-                    g2.setColor(Color.BLACK);
+                    String day = String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));//also gets the day of the month and places it on the clock face
+                    g2.setColor(Color.ORANGE);//sets the color to orange
+                    g2.drawString(day, (int) Math.round(x2+65), (int) Math.round(y2+5));//draws the day of the month
+                    g2.setColor(Color.BLACK);//sets the color to black
                 }
-                count++;
+                count++;//increases the count
             } else {
-                g2.setStroke(new BasicStroke(1));
+                g2.setStroke(new BasicStroke(1));//sets the stroke to regular
             }
-            Line2D.Double tick = new Line2D.Double(x1,y1,x2,y2);
+            Line2D.Double tick = new Line2D.Double(x1,y1,x2,y2);//draws the rest of the minute ticks
             g2.draw(tick);
         }
     }
