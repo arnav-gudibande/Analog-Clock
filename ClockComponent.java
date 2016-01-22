@@ -10,15 +10,15 @@ import java.util.GregorianCalendar;
 
 public class ClockComponent extends JComponent
 {
-    public static final int DIAMETER = 300;
-    public static final int frameW = (int) Math.round(DIAMETER * 1.75);
+    public static final int DIAMETER = 300;//diameter of the clock
+    public static final int frameW = (int) Math.round(DIAMETER * 1.75);//both the frameW and H of the Jframe
     public static final int frameH = (int) Math.round(DIAMETER * 1.75);
-    public static Calendar calendar = new GregorianCalendar();
+    public static Calendar calendar = new GregorianCalendar();//creates a new calendar object 
 
-    public void paintComponent(Graphics g){
+    public void paintComponent(Graphics g){//the paint component that creates a new Graphics2D JComponent and draws the clock hands and face on it
         Graphics2D g2 = (Graphics2D) g;
-        g2.translate(frameW/2,frameH/2);
-        drawClockFace(g2);
+        g2.translate(frameW/2,frameH/2);//translates the face of the graph to the origin, facilitates the drawing of the clock
+        drawClockFace(g2);//draws the clock face and hands on the g2 object
         drawClockHands(g2);
     }
 
@@ -82,54 +82,54 @@ public class ClockComponent extends JComponent
         }
     }
 
-    public double getHourRadians(int hr, int min){//hour goes in, angle corresponding to hr(in radians)
+    public double getHourRadians(int hr, int min){//hour and minute goes in, returns the radian position of the hour hand
         double in = (double) min;
-        double HrMin = hr+(in/60);
-        return Math.toRadians(30*(HrMin)-90);
+        double HrMin = hr+(in/60);//divides the min by 60 and adds it to the hour
+        return Math.toRadians(30*(HrMin)-90);//converts it to degrees - then goes to radians
     }
 
-    public double getMinRadians(int min){//hour goes in, angle corresponding to hr(in radians)
-        return Math.toRadians(6*min-90);
+    public double getMinRadians(int min){//minute goes in = returns the radian position of the minute hand
+        return Math.toRadians(6*min-90);//derived the formula from the table of values
     }
 
-    public double getSecRadians(int sec){//hour goes in, angle corresponding to hr(in radians)
-        return Math.toRadians(6*sec-90);
+    public double getSecRadians(int sec){//second goes in = returns the radian posiino of the second hand
+        return Math.toRadians(6*sec-90);//derived the formula from the table of values
     }
 
     public void drawClockHands(Graphics2D g2){
 
-        int hour = calendar.get(Calendar.HOUR);
+        int hour = calendar.get(Calendar.HOUR);//gets the hour, minute and second using the Calendar object
         int minute = calendar.get(Calendar.MINUTE);
         int second = calendar.get(Calendar.SECOND);
 
-        double r = DIAMETER * 0.235;
-        double rm = DIAMETER * 0.34;
-        double rs = DIAMETER * 0.3;
+        double r = DIAMETER * 0.235;//sets the size of the hour hand
+        double rm = DIAMETER * 0.34;//sets the size of the minute hand
+        double rs = DIAMETER * 0.3;//sets the size of the second hand
 
-        double hRadians = getHourRadians(hour,minute);
-        double mRadians = getMinRadians(minute);
-        double sRadians = getSecRadians(second);
+        double hRadians = getHourRadians(hour,minute);//gets the radian positon of the hour hand
+        double mRadians = getMinRadians(minute);//gets the radian positon of the minute hand
+        double sRadians = getSecRadians(second);//gets the radian positon of the second hand
 
-        double xh = r*Math.cos(hRadians);//calculates the x2 point, by multiplying r2 by the cosine of theta
-        double yh = (-r*Math.sin(hRadians))*-1;
-        double xm = rm*Math.cos(mRadians);//calculates the x2 point, by multiplying r2 by the cosine of theta
-        double ym = (-rm*Math.sin(mRadians))*-1;
-        double xs = rs*Math.cos(sRadians);//calculates the x2 point, by multiplying r2 by the cosine of theta
-        double ys = (-rs*Math.sin(sRadians))*-1;
+        double xh = r*Math.cos(hRadians);//calculates the xh point, by multiplying r by the cosine of theta
+        double yh = (-r*Math.sin(hRadians))*-1;//gets y value of hour hand
+        double xm = rm*Math.cos(mRadians);//calculates the xm point, by multiplying rm by the cosine of theta
+        double ym = (-rm*Math.sin(mRadians))*-1;//gets y value of the minute hand
+        double xs = rs*Math.cos(sRadians);//calculates the xs point, by multiplying rs by the cosine of theta
+        double ys = (-rs*Math.sin(sRadians))*-1;//gets y value of the second hand
 
+        g2.setStroke(new BasicStroke(2));//thickens the line in the graphical component g2
+        Ellipse2D.Double handOrigin = new Ellipse2D.Double(-3.75,-3.75,7.5,7.5);//sets the origin as a circle in the middle of the clock
+
+        Line2D.Double minuteHand = new Line2D.Double(0,0,xm,ym);//minute hand is drawn, the xm and ym position is where the line connects
+        Line2D.Double hourHand = new Line2D.Double(0,0,xh,yh);//hour hand is drawn, the xh and yh position is where the line connects
+        Line2D.Double secondHand = new Line2D.Double(0,0,xs,ys);//second hand is drawn, the xs and ys position is where the line connects
+
+        g2.draw(minuteHand);//draws the minute hand
+        g2.draw(hourHand);//draws the hour hand
+        g2.draw(handOrigin);//draws the origin of the clock
+        g2.setColor(Color.ORANGE);//sets the color to orange
         g2.setStroke(new BasicStroke(2));
-        Ellipse2D.Double handOrigin = new Ellipse2D.Double(-3.75,-3.75,7.5,7.5);
-
-        Line2D.Double minuteHand = new Line2D.Double(0,0,xm,ym);
-        Line2D.Double hourHand = new Line2D.Double(0,0,xh,yh);
-        Line2D.Double secondHand = new Line2D.Double(0,0,xs,ys);
-
-        g2.draw(minuteHand);
-        g2.draw(hourHand);
-        g2.draw(handOrigin);
-        g2.setColor(Color.ORANGE);
-        g2.setStroke(new BasicStroke(2));
-        g2.draw(secondHand);
+        g2.draw(secondHand);//draws the second hand
     }
 
 }
