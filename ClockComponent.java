@@ -4,6 +4,7 @@ import java.awt.Graphics2D;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.geom.*;
+import java.awt.Font;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -26,13 +27,14 @@ public class ClockComponent extends JComponent
         g2.setStroke(new BasicStroke(3));//emboldens the line
         g2.draw(border);//draws the circle on the Graphics2D object 
 
-        double r1 = DIAMETER * 0.4;//sets r1 to 2/5 of the diameter
-        double r2 = DIAMETER * 0.45;//sets r2 to 0.45 of the diameter
+        double r1 = DIAMETER * 0.4;//sets r1 to 2/5 of the diameter - sets the hypotenuse value for the inner part of the tick mark
+        double r2 = DIAMETER * 0.45;//sets r2 to 0.45 of the diameter - for the outer pt, as the function of the diameter
         int count=0;//count is 0
         String hour = "";//hour is initialized
 
         for(int theta = 0; theta < 360; theta=theta+6) {//for loop to go around the circle starting at 0 degrees and ending at 360 degrees, every 6 degrees
-            double thetaRadians = Math.toRadians(theta);//converts the degrees to radians
+
+            double thetaRadians = Math.toRadians(theta);//converts the degrees to radians - invoking the static method used to convert theta to radians for calculation purposes
             double x1 = r1*Math.cos(thetaRadians);//calculates the x1 point, by multiplying r1 by the cosine of theta
             double y1 = -r1*Math.sin(thetaRadians);//calculates the y1 point, by multiplying r1 by the sin of theta
             double x2 = r2*Math.cos(thetaRadians);//calculates the x2 point, by multiplying r2 by the cosine of theta
@@ -40,23 +42,25 @@ public class ClockComponent extends JComponent
             if(theta%5==0){//if the theta is a multiple of five, then the tick represents one of the hours
                 g2.setStroke(new BasicStroke(2));//if its an hour, then we embolden that specific tick
                 Line2D.Double tick = new Line2D.Double(x1,y1,x2,y2);//draws the tick
-                g2.draw(tick);
+                g2.draw(tick);//draws the line2d.double on the Graphical component
             }
+
             if(theta%90==0 || theta==0) {//if it is either 12,3,6 or 9, then embolden it and place a number by that tick
                 g2.setStroke(new BasicStroke(2));//bold it 
+
                 switch(count){//switch statement for the count
                     case 0: 
-                        hour="3";//set the hour to 3
-                        break;
+                    hour="3";//set the hour to 3
+                    break;
                     case 1: 
-                        hour="12";//set it to 12
-                        break;
+                    hour="12";//set it to 12
+                    break;
                     case 2: 
-                        hour="9";//set it to 9
-                        break;
+                    hour="9";//set it to 9
+                    break;
                     case 3: 
-                        hour="6";//set it to 6
-                        break;
+                    hour="6";//set it to 6
+                    break;
                 }
                 if(hour.equals("12")) g2.drawString(hour,(int) Math.round(x2-6.7),(int) Math.round(y2+30));//if its 12, then position the 12 below the tick
                 if(hour.equals("3")) g2.drawString(hour,(int) Math.round(x2-30),(int) Math.round(y2+5));//if its 3, then position the 3 to the left of the tick
@@ -68,6 +72,7 @@ public class ClockComponent extends JComponent
                     g2.drawString(day, (int) Math.round(x2+65), (int) Math.round(y2+5));//draws the day of the month
                     g2.setColor(Color.BLACK);//sets the color to black
                 }
+
                 count++;//increases the count
             } else {
                 g2.setStroke(new BasicStroke(1));//sets the stroke to regular
@@ -77,15 +82,48 @@ public class ClockComponent extends JComponent
         }
     }
 
+    public double getHourRadians(int hr, int min){//hour goes in, angle corresponding to hr(in radians)
+        double in = (double) min;
+        double HrMin = hr+(in/60);
+        return Math.toRadians(30*(HrMin)-90);
+    }
+
+    public double getMinRadians(int min){//hour goes in, angle corresponding to hr(in radians)
+        return Math.toRadians(6*min-90);
+    }
+
+    public double getSecRadians(int sec){//hour goes in, angle corresponding to hr(in radians)
+        return Math.toRadians(6*sec-90);
+    }
+
     public void drawClockHands(Graphics2D g2){
+
         int hour = calendar.get(Calendar.HOUR);
         int minute = calendar.get(Calendar.MINUTE);
         int second = calendar.get(Calendar.SECOND);
+
+        double r = DIAMETER * 0.235;
+        double rm = DIAMETER * 0.34;
+        double rs = DIAMETER * 0.3;
+
+        double hRadians = getHourRadians(hour,minute);
+        double mRadians = getMinRadians(minute);
+        double sRadians = getSecRadians(second);
+
+        double xh = r*Math.cos(hRadians);//calculates the x2 point, by multiplying r2 by the cosine of theta
+        double yh = (-r*Math.sin(hRadians))*-1;
+        double xm = rm*Math.cos(mRadians);//calculates the x2 point, by multiplying r2 by the cosine of theta
+        double ym = (-rm*Math.sin(mRadians))*-1;
+        double xs = rs*Math.cos(sRadians);//calculates the x2 point, by multiplying r2 by the cosine of theta
+        double ys = (-rs*Math.sin(sRadians))*-1;
+
         g2.setStroke(new BasicStroke(2));
         Ellipse2D.Double handOrigin = new Ellipse2D.Double(-3.75,-3.75,7.5,7.5);
-        Line2D.Double minuteHand = new Line2D.Double(0,0,0,-(DIAMETER-203));
-        Line2D.Double hourHand = new Line2D.Double(0,0,15,-(DIAMETER-240));
-        Line2D.Double secondHand = new Line2D.Double(0,0,40,-(DIAMETER-194));
+
+        Line2D.Double minuteHand = new Line2D.Double(0,0,xm,ym);
+        Line2D.Double hourHand = new Line2D.Double(0,0,xh,yh);
+        Line2D.Double secondHand = new Line2D.Double(0,0,xs,ys);
+
         g2.draw(minuteHand);
         g2.draw(hourHand);
         g2.draw(handOrigin);
@@ -93,4 +131,7 @@ public class ClockComponent extends JComponent
         g2.setStroke(new BasicStroke(2));
         g2.draw(secondHand);
     }
+
 }
+
+
