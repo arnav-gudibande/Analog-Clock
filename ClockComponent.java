@@ -7,6 +7,12 @@ import java.awt.geom.*;
 import java.awt.Font;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import javax.swing.*;
+import javax.swing.Timer;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.*;
 
 public class ClockComponent extends JComponent
 {
@@ -88,8 +94,10 @@ public class ClockComponent extends JComponent
         return Math.toRadians(30*(HrMin)-90);//converts it to degrees - then goes to radians
     }
 
-    public double getMinRadians(int min){//minute goes in = returns the radian position of the minute hand
-        return Math.toRadians(6*min-90);//derived the formula from the table of values
+    public double getMinRadians(int min, int sec){//minute goes in = returns the radian position of the minute hand
+        double in = (double) sec;
+        double SecMin = min+(in/60);
+        return Math.toRadians(6*(SecMin)-90);//derived the formula from the table of values
     }
 
     public double getSecRadians(int sec){//second goes in = returns the radian posiino of the second hand
@@ -107,7 +115,7 @@ public class ClockComponent extends JComponent
         double rs = DIAMETER * 0.3;//sets the size of the second hand
 
         double hRadians = getHourRadians(hour,minute);//gets the radian positon of the hour hand
-        double mRadians = getMinRadians(minute);//gets the radian positon of the minute hand
+        double mRadians = getMinRadians(minute, second);//gets the radian positon of the minute hand
         double sRadians = getSecRadians(second);//gets the radian positon of the second hand
 
         double xh = r*Math.cos(hRadians);//calculates the xh point, by multiplying r by the cosine of theta
@@ -133,5 +141,4 @@ public class ClockComponent extends JComponent
     }
 
 }
-
 

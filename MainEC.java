@@ -3,7 +3,7 @@ import java.util.Scanner;
 
 public class MainEC
 {
-
+    
     public static void main(String[] args){
         JFrame clockFrame = new JFrame("Clock");//creates a new Jframe
         clockFrame.setSize(ClockComponent.frameW,ClockComponent.frameH);//sets the size of the Jframe
@@ -12,5 +12,5 @@ public class MainEC
         clockFrame.setResizable(false);//cannot resize it
         clockFrame.setVisible(true);//sets it visible
     }
-    
+
 }
