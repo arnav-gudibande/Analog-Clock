@@ -4,31 +4,26 @@ import java.awt.Graphics2D;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.geom.*;
-import java.awt.Font;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import javax.swing.*;
-import javax.swing.Timer;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.*;
 
-public class ClockComponent extends JComponent
+public class ClockComponent extends JComponent implements ActionListener
 {
     public static final int DIAMETER = 300;//diameter of the clock
     public static final int frameW = (int) Math.round(DIAMETER * 1.75);//both the frameW and H of the Jframe
     public static final int frameH = (int) Math.round(DIAMETER * 1.75);
-    public static Calendar calendar = new GregorianCalendar();//creates a new calendar object 
 
     public void paintComponent(Graphics g){//the paint component that creates a new Graphics2D JComponent and draws the clock hands and face on it
+        Calendar calendar = new GregorianCalendar();
         Graphics2D g2 = (Graphics2D) g;
         g2.translate(frameW/2,frameH/2);//translates the face of the graph to the origin, facilitates the drawing of the clock
-        drawClockFace(g2);//draws the clock face and hands on the g2 object
-        drawClockHands(g2);
+        drawClockFace(g2, calendar);//draws the clock face and hands on the g2 object
+        drawClockHands(g2, calendar);
     }
 
-    public static void drawClockFace(Graphics2D g2){
+    public void drawClockFace(Graphics2D g2, Calendar calendar){
         Ellipse2D.Double border = new Ellipse2D.Double(-DIAMETER/2,-DIAMETER/2,DIAMETER,DIAMETER);//draws the border of the clock, the center is the diameter/2 and its size is the diameter
         g2.setStroke(new BasicStroke(3));//emboldens the line
         g2.draw(border);//draws the circle on the Graphics2D object 
@@ -45,6 +40,7 @@ public class ClockComponent extends JComponent
             double y1 = -r1*Math.sin(thetaRadians);//calculates the y1 point, by multiplying r1 by the sin of theta
             double x2 = r2*Math.cos(thetaRadians);//calculates the x2 point, by multiplying r2 by the cosine of theta
             double y2 = -r2*Math.sin(thetaRadians);//calculates the y2 point, by multiplying r2 by the sin of theta
+            
             if(theta%5==0){//if the theta is a multiple of five, then the tick represents one of the hours
                 g2.setStroke(new BasicStroke(2));//if its an hour, then we embolden that specific tick
                 Line2D.Double tick = new Line2D.Double(x1,y1,x2,y2);//draws the tick
@@ -78,7 +74,6 @@ public class ClockComponent extends JComponent
                     g2.drawString(day, (int) Math.round(x2+65), (int) Math.round(y2+5));//draws the day of the month
                     g2.setColor(Color.BLACK);//sets the color to black
                 }
-
                 count++;//increases the count
             } else {
                 g2.setStroke(new BasicStroke(1));//sets the stroke to regular
@@ -104,7 +99,7 @@ public class ClockComponent extends JComponent
         return Math.toRadians(6*sec-90);//derived the formula from the table of values
     }
 
-    public void drawClockHands(Graphics2D g2){
+    public void drawClockHands(Graphics2D g2, Calendar calendar){
 
         int hour = calendar.get(Calendar.HOUR);//gets the hour, minute and second using the Calendar object
         int minute = calendar.get(Calendar.MINUTE);
@@ -138,6 +133,10 @@ public class ClockComponent extends JComponent
         g2.setColor(Color.ORANGE);//sets the color to orange
         g2.setStroke(new BasicStroke(2));
         g2.draw(secondHand);//draws the second hand
+    }
+    
+    public void actionPerformed(ActionEvent e){
+        repaint();
     }
 
 }

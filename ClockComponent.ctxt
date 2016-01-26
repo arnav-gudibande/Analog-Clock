@@ -1,14 +1,16 @@
 #BlueJ class context
 comment0.params=g
 comment0.target=void\ paintComponent(java.awt.Graphics)
-comment1.params=g2
-comment1.target=void\ drawClockFace(java.awt.Graphics2D)
+comment1.params=g2\ calendar
+comment1.target=void\ drawClockFace(java.awt.Graphics2D,\ java.util.Calendar)
 comment2.params=hr\ min
 comment2.target=double\ getHourRadians(int,\ int)
 comment3.params=min\ sec
 comment3.target=double\ getMinRadians(int,\ int)
 comment4.params=sec
 comment4.target=double\ getSecRadians(int)
-comment5.params=g2
-comment5.target=void\ drawClockHands(java.awt.Graphics2D)
-numComments=6
+comment5.params=g2\ calendar
+comment5.target=void\ drawClockHands(java.awt.Graphics2D,\ java.util.Calendar)
+comment6.params=e
+comment6.target=void\ actionPerformed(java.awt.event.ActionEvent)
+numComments=7
