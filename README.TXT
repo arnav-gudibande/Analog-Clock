@@ -5,5 +5,5 @@ all he/she needs to know. The comments should usually include at least:
 ------------------------------------------------------------------------
 
 Analog-Clock Graphically Animated Clock
-now with ticks and clock hands
-now moves every time you compile
+
+Fully Functional
